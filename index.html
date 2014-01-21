@@ -1,0 +1,193 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<title>Sky Forms Pro</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		
+		<link rel="stylesheet" href="css/sky-forms.css">
+		<link rel="stylesheet" href="css/sky-forms-red.css">
+		<!--[if lt IE 9]>
+			<link rel="stylesheet" href="css/sky-forms-ie8.css">
+		<![endif]-->
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+		<script src="js/jquery.modal.js"></script>
+		<!--[if lt IE 10]>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.0.7/jquery.placeholder.min.js"></script>
+		<![endif]-->		
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="js/sky-forms-ie8.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body class="bg-red">
+		<div class="body body-s">
+			<div class="modal">Click <a href="#sky-form" data-product="SuperSize" class="modal-opener">here</a> to open modal form.</div>
+		</div>
+		
+		<form action="" id="sky-form" class="sky-form sky-form-modal">
+				<header>Leave a Product Review</header>
+				<input type="hidden" value="" name="productname" id="productname" />
+				<fieldset>					
+					<section>
+						<label class="input">
+							<i class="icon-append icon-user"></i>
+							<input type="text" name="name" id="name" placeholder="Your name">
+						</label>
+					</section>
+					
+					<section>
+						<label class="input">
+							<i class="icon-append icon-envelope-alt"></i>
+							<input type="email" name="email" id="email" placeholder="Your e-mail">
+							
+						</label>
+					</section>
+					
+					<section>
+						<label class="input">
+							<i class="icon-append icon-comment"></i>
+							<input type="text" name="subject" id="subject" placeholder="Subject">
+						</label>
+					</section>					
+					<section>
+						<label class="label"></label>
+						<label class="textarea">
+							<i class="icon-append icon-comment"></i>
+							<textarea rows="3" name="review" id="review" placeholder="Your review... example.  I have used this product...."></textarea>
+						</label>
+					</section>
+					
+					<section>			
+						<div class="rating">
+							<input type="radio" name="overall" value="5" id="overall-5">
+							<label for="overall-5"><i class="icon-large icon-star"></i></label>
+							<input type="radio" name="overall" value="4" id="overall-4">
+							<label for="overall-4"><i class="icon-large icon-star"></i></label>
+							<input type="radio" name="overall" value="3" id="overall-3">
+							<label for="overall-3"><i class="icon-large icon-star"></i></label>
+							<input type="radio" name="overall" value="2" id="overall-2">
+							<label for="overall-2"><i class="icon-large icon-star"></i></label>
+							<input type="radio" name="overall" value="1" id="overall-1">
+							<label for="overall-1"><i class="icon-large icon-star"></i></label>
+							Overall rating
+						</div>
+					</section>
+				</fieldset>
+				<footer>
+					<button type="submit" class="button">Submit a review</button>
+				</footer>
+			</form>
+		
+		<script type="text/javascript">
+			$(function()
+			{
+				// Validation
+				$("#sky-form").validate(
+				{					
+					// Rules for form validation
+					rules:
+					{
+						name:
+						{
+							required: true
+						},
+						subject:
+						{
+							required: true
+						},
+						email:
+						{
+							required: true,
+							email: true
+						},
+						review:
+						{
+							required: true,
+							minlength: 20
+						},
+						quality:
+						{
+							required: true
+						},
+						reliability:
+						{
+							required: true
+						},
+						overall:
+						{
+							required: true
+						}
+					},
+										
+					// Messages for form validation
+					messages:
+					{
+						name:
+						{
+							required: 'Please enter your name'
+						},
+						subject:
+						{
+							required: 'Please enter Subject of review'
+						},
+						email:
+						{
+							required: 'Please enter your email address',
+							email: 'Please enter a VALID email address'
+						},
+						review:
+						{
+							required: 'Please enter your review'
+						},
+						quality:
+						{
+							required: 'Please rate quality of the product'
+						},
+						reliability:
+						{
+							required: 'Please rate reliability of the product'
+						},
+						overall:
+						{
+							required: 'Please rate the product'
+						}
+					},					
+					
+					// Do not change code below
+					errorPlacement: function(error, element)
+					{
+						error.insertAfter(element.parent());
+					}
+				});
+				
+				//function to ajax submit the form
+				$(document).on("submit", "#sky-form", function(event) {
+					event.stopPropagation();
+					
+					$.ajax({
+						type: "post",
+						url: "submit_form.php",
+						data: $("#sky-form").serialize(),
+						success: function(msg) {
+							if(msg != "done") {
+								alert(msg);
+							} else {
+								$('#sky-form-modal-overlay').fadeOut();
+								$('.sky-form-modal').fadeOut();
+							}
+						}
+					});
+				
+					return false;
+				});
+				
+				
+			});			
+		</script>
+	</body>
+</html>
